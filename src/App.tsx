@@ -1,11 +1,11 @@
-import React from 'react';
-import { Home } from './screens/Home';
-import { useFonts, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter'
-import { Archivo_400Regular, Archivo_500Medium, Archivo_600SemiBold } from '@expo-google-fonts/archivo'
+import { Archivo_400Regular, Archivo_500Medium, Archivo_600SemiBold } from '@expo-google-fonts/archivo';
+import { Inter_400Regular, Inter_500Medium, useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
+import React from 'react';
+import 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
+import { Routes } from './routes';
 import theme from './styles/theme';
-import { useTheme } from 'styled-components/native';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <Routes />
     </ThemeProvider>
   )
 }
