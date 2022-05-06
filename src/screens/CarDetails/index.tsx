@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
@@ -22,6 +23,7 @@ import {
   } from './styles';
 
 export function CarDetails() {
+  const navigation = useNavigation();
   const car = {
     brand: 'Audi',
     name: 'RS 5 Coupé',
@@ -58,6 +60,10 @@ export function CarDetails() {
     ],
     about: 'Qualquer texto vai aqui para descrever o sobre esse carro aleatorio'
   }
+
+  const handleConfirmCar = () => {
+    navigation.navigate('Scheduling');
+  };
 
   return (
     <Container>
@@ -97,7 +103,7 @@ export function CarDetails() {
         </Content>
 
         <Footer>
-          <Button title="Escolher período do aluguel" onPress={() => {}} />
+          <Button title="Escolher período do aluguel" onPress={handleConfirmCar} />
         </Footer>
 
     </Container>

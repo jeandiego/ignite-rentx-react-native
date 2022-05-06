@@ -17,6 +17,7 @@ import {
 } from './styles';
 import { Button } from '../../components/Button';
 import { Calendar, DayProps, generateInterval, MarkedDateProps } from '../../components/Calendar';
+import { useNavigation } from '@react-navigation/native';
 
 
 interface RentalPeriod{
@@ -27,12 +28,11 @@ interface RentalPeriod{
 
 
 export function Scheduling() {
+  const navigation = useNavigation();
   const theme = useTheme();
 
-  function handleConfirmRental(){
-  };
-
-  function handleBack(){
+  const handleConfirmCar = () => {
+    navigation.navigate('SchedulingDetails');
   };
 
   function handleChangeDate(date: DayProps){
@@ -42,10 +42,7 @@ export function Scheduling() {
     <Container>
       <StatusBar barStyle='light-content' translucent backgroundColor="transparent" />
         <Header>
-            <BackButton onPress={handleBack}
-                        color={theme.colors.shape}
-            />
-
+            <BackButton onPress={navigation.goBack} color={theme.colors.shape} />
             <Title>
                 Escolha uma {'\n'}
                 data de início e {'\n'}
@@ -83,7 +80,7 @@ export function Scheduling() {
         </Content>
 
         <Footer>
-          <Button title='Confirmar' enabled={false} onPress={handleConfirmRental} />
+          <Button title='Confirmar' enabled={false} onPress={handleConfirmCar} />
         </Footer>
     </Container>
   );

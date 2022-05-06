@@ -12,12 +12,15 @@ import {
   Footer
 } from './styles';
 import { ConfirmButton } from '../../components/ConfirmButton';
+import { useNavigation } from '@react-navigation/native';
 
 
 export function SchedulingCompleted() {
-    const { width } = useWindowDimensions();
+  const navigation = useNavigation();
+  const { width } = useWindowDimensions();
 
-    function handleConfirm(){
+  function handleConfirm(){
+      navigation.navigate('Home')
     };
   
   return (

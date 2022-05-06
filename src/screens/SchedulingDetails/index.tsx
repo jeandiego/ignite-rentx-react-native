@@ -32,6 +32,7 @@ import {
    RentalPriceTotal
  } from './styles';
 import { ImageSlider } from '../../components/ImageSlider';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -43,6 +44,7 @@ interface RentalPeriod{
 
 export function SchedulingDetails() {
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
   const car = {
     brand: 'Audi',
     name: 'RS 5 Coupé',
@@ -81,10 +83,7 @@ export function SchedulingDetails() {
   }
 
   async function handleConfirmRental(){
-  };
-
-  function handleBack(){
-    // navigation.goBack();
+    navigation.navigate('SchedulingCompleted');
   };
 
   // useEffect(()=>{
@@ -96,7 +95,7 @@ export function SchedulingDetails() {
   return (
     <Container>
         <Header>
-            <BackButton onPress={handleBack} color={'blue'} />
+            <BackButton onPress={navigation.goBack} color={'blue'} />
         </Header>
 
         <CarImages>
