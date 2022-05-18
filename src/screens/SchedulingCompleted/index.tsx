@@ -9,7 +9,8 @@ import {
   Content,
   Title,
   Message,
-  Footer
+  Footer,
+  LogoWrapper
 } from './styles';
 import { ConfirmButton } from '../../components/ConfirmButton';
 import { useNavigation } from '@react-navigation/native';
@@ -30,8 +31,9 @@ export function SchedulingCompleted() {
         translucent
         backgroundColor='transparent'
       />
-
-        <LogoSvg width={width} />
+        <LogoWrapper>
+          <LogoSvg width={width} />
+        </LogoWrapper>
 
         <Content>
             <DoneSvg width={80} height={80} />

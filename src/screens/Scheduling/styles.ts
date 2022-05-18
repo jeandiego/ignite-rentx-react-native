@@ -48,12 +48,12 @@ export const DateTitle = styled.Text`
 
 
 /** Added a View Wrapper because iOS devices do not support border-bottom style on Text Components */
-export const DateValueBox = styled.Text<DateValueProps>`
+export const DateValueBox = styled.View<DateValueProps>`
   height: ${RFValue(32)}px;
+  justify-content: center;
   ${({ selected, theme}) => !selected && css`
     border-bottom-width: 1px;
     border-bottom-color: ${theme.colors.text};
-    padding-bottom: 5px;
   `};
 `;
 

@@ -1,12 +1,19 @@
 import { CarDTO } from "../dtos/CarDTO";
+import { IRentalPeriod } from "../screens/Scheduling";
 
 type AppRoutes = {
   Home: undefined;
   CarDetails: {
     car: CarDTO
   };
-  Scheduling: undefined;
-  SchedulingDetails: undefined;
+  Scheduling: {
+    car: CarDTO;
+  };
+  SchedulingDetails: {
+    car: CarDTO;
+    dates: string[];
+    rentalPeriod: IRentalPeriod;
+  };
   SchedulingCompleted: undefined;
 
 }

@@ -28,7 +28,6 @@ interface DayProps{
 
 function Calendar({markedDates, onDayPress,}: CalendarProps) {
     const theme = useTheme();
-    console.log({markedDates})
 
   return (
       <CustomCalendar 

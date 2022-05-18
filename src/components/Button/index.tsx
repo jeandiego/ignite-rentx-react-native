@@ -20,7 +20,7 @@ export function Button({title, enabled = true, loading = false, ...rest}: Props)
     <Container 
       {...rest} 
       style={{opacity: (enabled === false || loading === true) ? .5 : 1}} 
-      enabled={true} 
+      enabled={enabled} 
     >
       { loading ? 
         <ActivityIndicator color={theme.colors.shape} />

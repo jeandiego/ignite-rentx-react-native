@@ -32,7 +32,13 @@ import {
    RentalPriceTotal
  } from './styles';
 import { ImageSlider } from '../../components/ImageSlider';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { CarDTO } from '../../dtos/CarDTO';
+import { IRentalPeriod } from '../Scheduling';
+import { api } from '../../api/api';
+import { Alert } from 'react-native';
+import useAsync from '../../hooks/useAsync';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 
@@ -41,56 +47,41 @@ interface RentalPeriod{
   end: string;
 }
 
+interface IParams {
+  car: CarDTO,
+  dates: string[]
+  rentalPeriod: IRentalPeriod;
+}
+
 
 export function SchedulingDetails() {
-  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const car = {
-    brand: 'Audi',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'AO DIA',
-      price: 120,
-    },
-    thumbnail: 'https://www.webmotors.com.br/imagens/prod/348415/AUDI_RS5_2.9_V6_TFSI_GASOLINA_SPORTBACK_QUATTRO_STRONIC_34841510442727128.webp?s=fill&w=236&h=135&q=70&t=true',
-    accessories: [
-      {
-        name: '380KM/h',
-        type: 'speed',
-    },
-    {
-        name: '3.2s',
-        type: 'acceleration',
-    },
-    {
-        name: '800 HP',
-        type: 'turning_diameter',
-    },
-    {
-        name: 'Gasolina',
-        type: 'gasoline_motor',
-    },
-    {
-        name: 'Auto',
-        type: 'exchange',
-    },
-    {
-        name: '2 pessoas',
-        type: 'seats',
-    }
-    ],
-    about: 'Qualquer texto vai aqui para descrever o sobre esse carro aleatorio'
-  }
+  const route = useRoute();
+  const { car, dates, rentalPeriod } = route.params as IParams;
 
-  async function handleConfirmRental(){
-    navigation.navigate('SchedulingCompleted');
-  };
+  const { loading: scheduleLoading, call: handleConfirmRental } = useAsync(
+    async () => {
+      try {
+        const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
+        const unavailable_dates = [
+          ...schedulesByCar.data.unavailable_dates,
+          ...dates,
+        ]
+        await api.put(`/schedules_bycars/${car.id}`, {
+          id: car.id,
+          unavailable_dates
+        })
 
-  // useEffect(()=>{
-  //   setRentalPeriod({
-  //     start: format(getPlatformDate(new Date(dates[0])), "dd/MM/yyyy"),
-  //     end: format(getPlatformDate(new Date(dates[dates.length -1])), "dd/MM/yyyy"),
-  // })},[])
+        navigation.navigate('SchedulingCompleted')
+      } catch (error) {
+        console.warn(error);
+        Alert.alert('Não foi possível confirmar seu agendamentio')
+      }
+    },
+    [],
+  );
+
+  const totalRent = dates.length * car.rent.price;
 
   return (
     <Container>
@@ -99,7 +90,7 @@ export function SchedulingDetails() {
         </Header>
 
         <CarImages>
-          <ImageSlider imagesUrl={['https://www.webmotors.com.br/imagens/prod/348415/AUDI_RS5_2.9_V6_TFSI_GASOLINA_SPORTBACK_QUATTRO_STRONIC_34841510442727128.webp?s=fill&w=236&h=135&q=70&t=true']} />
+          <ImageSlider imagesUrl={car.photos} />
         </CarImages>
 
         <Content>
@@ -133,7 +124,7 @@ export function SchedulingDetails() {
             </CalendarIcon>
             <DateInfo>
               <DateTitle>DE</DateTitle>
-              <DateValue>14/02/2022</DateValue>
+              <DateValue>{rentalPeriod.startFormatted}</DateValue>
             </DateInfo>
 
             <Feather 
@@ -144,15 +135,15 @@ export function SchedulingDetails() {
 
             <DateInfo>
               <DateTitle>ATÉ</DateTitle>
-              <DateValue>18/02/2022</DateValue>
+              <DateValue>{rentalPeriod.endFormatted}</DateValue>
             </DateInfo>
           </RentalPeriod>
 
           <RentalPrice>
             <RentalPriceLabel>TOTAL</RentalPriceLabel>
             <RentalPriceDetails>
-              <RentalPriceQuota>{`R$ ${'2.900'} x ${'24'} diárias` }</RentalPriceQuota>
-              <RentalPriceTotal> R$ 2.900,00 </RentalPriceTotal>
+              <RentalPriceQuota>{`R$ ${car.rent.price} x ${dates.length} diárias` }</RentalPriceQuota>
+              <RentalPriceTotal> R$ {totalRent} </RentalPriceTotal>
             </RentalPriceDetails>
           </RentalPrice>
 
@@ -162,9 +153,9 @@ export function SchedulingDetails() {
           <Button 
             title="Alugar agora" 
             onPress={handleConfirmRental} 
-            color={theme.colors.success} 
-            enabled={!loading}
-            loading={loading} 
+            color={theme.colors.success}
+            enabled={!scheduleLoading}
+            loading={scheduleLoading} 
           />
         </Footer>
 
