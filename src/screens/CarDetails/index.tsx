@@ -1,9 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Accessory } from '../../components/Accessory';
 import { BackButton } from '../../components/BackButton';
 import { Button } from '../../components/Button';
 import { ImageSlider } from '../../components/ImageSlider';
+import { CarDTO } from '../../dtos/CarDTO';
 import { getAccessoryIcon } from '../../utils/iconUtils';
 import {
    Brand,
@@ -22,44 +23,14 @@ import {
     Footer,
   } from './styles';
 
+interface Params {
+  car: CarDTO;
+}
+
 export function CarDetails() {
   const navigation = useNavigation();
-  const car = {
-    brand: 'Audi',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'AO DIA',
-      price: 120,
-    },
-    thumbnail: 'https://www.webmotors.com.br/imagens/prod/348415/AUDI_RS5_2.9_V6_TFSI_GASOLINA_SPORTBACK_QUATTRO_STRONIC_34841510442727128.webp?s=fill&w=236&h=135&q=70&t=true',
-    accessories: [
-      {
-        name: '380KM/h',
-        type: 'speed',
-    },
-    {
-        name: '3.2s',
-        type: 'acceleration',
-    },
-    {
-        name: '800 HP',
-        type: 'turning_diameter',
-    },
-    {
-        name: 'Gasolina',
-        type: 'gasoline_motor',
-    },
-    {
-        name: 'Auto',
-        type: 'exchange',
-    },
-    {
-        name: '2 pessoas',
-        type: 'seats',
-    }
-    ],
-    about: 'Qualquer texto vai aqui para descrever o sobre esse carro aleatorio'
-  }
+  const route = useRoute();
+  const { car } = route.params as Params
 
   const handleConfirmCar = () => {
     navigation.navigate('Scheduling');
@@ -68,11 +39,11 @@ export function CarDetails() {
   return (
     <Container>
         <Header>
-            <BackButton onPress={() => {}} color='blue' />
+            <BackButton onPress={navigation.goBack} color='blue' />
         </Header>
 
         <CarImages>
-          <ImageSlider imagesUrl={['https://www.webmotors.com.br/imagens/prod/348415/AUDI_RS5_2.9_V6_TFSI_GASOLINA_SPORTBACK_QUATTRO_STRONIC_34841510442727128.webp?s=fill&w=236&h=135&q=70&t=true']} />
+          <ImageSlider imagesUrl={car.photos} />
         </CarImages>
 
         <Content>

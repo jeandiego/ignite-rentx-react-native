@@ -1,9 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { api } from '../../api/api';
 import Logo from '../../assets/logo.svg'
 import { CardCar } from '../../components/CardCar';
+import { Loader } from '../../components/Loader';
+import { CarDTO } from '../../dtos/CarDTO';
+import useAsync from '../../hooks/useAsync';
 import {
   Container,
   Header,
@@ -13,20 +17,31 @@ import {
 } from './styles';
 
 export function Home() {
+  const [cars, setCars] = useState<CarDTO[]>([]);
   const navigation = useNavigation();
 
-  const carData = {
-    brand: 'Audi',
-    name: 'RS 5 Coupé',
-    rent: {
-      period: 'AO DIA',
-      price: 120,
-    },
-    thumbnail: 'https://www.webmotors.com.br/imagens/prod/348415/AUDI_RS5_2.9_V6_TFSI_GASOLINA_SPORTBACK_QUATTRO_STRONIC_34841510442727128.webp?s=fill&w=236&h=135&q=70&t=true'
+  const handleCarDetails = (car: CarDTO) => {
+    navigation.navigate('CarDetails', { car })
   }
 
-  const renderItem = useCallback(({ item }) => {
-    return <CardCar data={carData} onPress={() => navigation.navigate('CarDetails')} />
+   const renderItem = useCallback(({ item }) => {
+    return <CardCar data={item} onPress={() => handleCarDetails(item)} />
+  }, [])
+
+  const { loading: loadingCars, call: fetchCars } = useAsync(
+    async () => {
+      try {
+      const response = await api.get('/cars')
+      setCars(response.data);
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    fetchCars();
   }, [])
 
   return (
@@ -40,17 +55,19 @@ export function Home() {
         <HeaderContent>
         <Logo width={RFValue(108)} height={RFValue(12)} />
         <TotalCars>
-          Total de 12 carros
+          Total de {cars.length} carros
         </TotalCars>
         </HeaderContent>
       </Header>
-
-    <CarList 
-      data={[1,2,3,4,5,6,7,8]}
-      keyExtractor={item => String(item)}
-      renderItem={renderItem}
+    {loadingCars ? 
+      <Loader /> 
+      :
+      <CarList 
+       data={cars}
+       keyExtractor={item => String(item.id)}
+       renderItem={renderItem}
       />
-      
+    }
     </Container>
   );
 }
