@@ -1,6 +1,10 @@
+import { CarDTO } from "../dtos/CarDTO";
+
 type AppRoutes = {
   Home: undefined;
-  CarDetails: undefined;
+  CarDetails: {
+    car: CarDTO
+  };
   Scheduling: undefined;
   SchedulingDetails: undefined;
   SchedulingCompleted: undefined;
