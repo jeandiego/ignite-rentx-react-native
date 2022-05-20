@@ -1,8 +1,7 @@
 import React from 'react';
 import { useWindowDimensions, StatusBar } from 'react-native';
-import LogoSvg from '../../assets/logo_background_gray.svg';
-import DoneSvg from '../../assets/done.svg';
-// import { ConfirmButton } from '../../components/ConfirmButton';
+import LogoSvg from '~/assets/logo_background_gray.svg';
+import DoneSvg from '~/assets/done.svg';
 
 import {
   Container,
@@ -12,7 +11,7 @@ import {
   Footer,
   LogoWrapper
 } from './styles';
-import { ConfirmButton } from '../../components/ConfirmButton';
+import { ConfirmButton } from '~/components/ConfirmButton';
 import { useNavigation } from '@react-navigation/native';
 
 

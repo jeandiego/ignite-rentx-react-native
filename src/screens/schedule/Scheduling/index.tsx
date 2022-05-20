@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { BackButton } from '../../components/BackButton';
+import { BackButton } from '~/components/BackButton';
 import { StatusBar, Alert } from 'react-native';
 import {useTheme} from 'styled-components';
-import ArrowSvg from '../../assets/arrow.svg';
+import ArrowSvg from '~/assets/arrow.svg';
 import {
   Container, 
   Header, 
@@ -15,12 +15,12 @@ import {
   Content, 
   Footer
 } from './styles';
-import { Button } from '../../components/Button';
-import { Calendar, DayProps, generateInterval, MarkedDateProps } from '../../components/Calendar';
+import { Calendar, DayProps, generateInterval, MarkedDateProps } from '~/components/Calendar';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { format } from 'date-fns';
-import { getPlatformDate } from '../../utils/dateUtils';
-import { CarDTO } from '../../dtos/CarDTO';
+import { getPlatformDate } from '~/utils/dateUtils';
+import { CarDTO } from '~/dtos/CarDTO';
+import { Button } from '~/components/Button';
 
 
 export interface IRentalPeriod {
@@ -39,11 +39,11 @@ export function Scheduling() {
   const { car } = route.params as { car: CarDTO }
   
   const handleConfirmCar = () => {
-    if (!rentalPeriod.startFormatted || !rentalPeriod.endFormatted) {
-      Alert.alert('Selecione o intervalo para alugar');
-    } else {
-      navigation.navigate('SchedulingDetails', { car, dates: Object.keys(markedDates), rentalPeriod  });
-    }
+    navigation.navigate('SchedulingDetails', { 
+        car,
+        dates: Object.keys(markedDates), 
+        rentalPeriod  
+    });
   };
 
   function handleChangeDate(date: DayProps){
@@ -69,14 +69,10 @@ export function Scheduling() {
 
   }
 
-
-  console.log(Boolean(rentalPeriod?.endFormatted))
-  console.log(!!rentalPeriod?.startFormatted)
-
   return (
     <Container>
-      <StatusBar barStyle='light-content' translucent backgroundColor="transparent" />
         <Header>
+          <StatusBar barStyle='light-content' translucent backgroundColor="transparent" />
             <BackButton onPress={navigation.goBack} color={theme.colors.shape} />
             <Title>
                 Escolha uma {'\n'}

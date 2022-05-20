@@ -1,11 +1,11 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BackButton } from '../../components/BackButton';
-import { Button } from '../../components/Button';
-import theme from '../../styles/theme';
-import { Accessory } from '../../components/Accessory';
-import { getAccessoryIcon } from '../../utils/iconUtils';
+import { BackButton } from '~/components/BackButton';
+import { Button } from '~/components/Button';
+import theme from '~/styles/theme';
+import { Accessory } from '~/components/Accessory';
+import { getAccessoryIcon } from '~/utils/iconUtils';
 import { 
    Acessories,
    Brand,
@@ -31,13 +31,13 @@ import {
    RentalPriceQuota,
    RentalPriceTotal
  } from './styles';
-import { ImageSlider } from '../../components/ImageSlider';
+import { ImageSlider } from '~/components/ImageSlider';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CarDTO } from '../../dtos/CarDTO';
+import { CarDTO } from '~/dtos/CarDTO';
 import { IRentalPeriod } from '../Scheduling';
-import { api } from '../../api/api';
+import { api } from '~/api/api';
 import { Alert } from 'react-native';
-import useAsync from '../../hooks/useAsync';
+import useAsync from '~/hooks/useAsync';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
@@ -67,6 +67,13 @@ export function SchedulingDetails() {
           ...schedulesByCar.data.unavailable_dates,
           ...dates,
         ]
+
+        await api.post('schedules_byuser', {
+          user_id: 1,
+          car,
+          rentalPeriod,
+        })
+        console.log({rentalPeriod})
         await api.put(`/schedules_bycars/${car.id}`, {
           id: car.id,
           unavailable_dates
