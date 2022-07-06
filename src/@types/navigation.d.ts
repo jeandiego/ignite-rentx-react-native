@@ -3,6 +3,7 @@ import { IRentalPeriod } from "../screens/Scheduling";
 
 type AppRoutes = {
   Home: undefined;
+  MyCars: undefined;
   CarDetails: {
     car: CarDTO
   };

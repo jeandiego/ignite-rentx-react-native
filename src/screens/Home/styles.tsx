@@ -38,16 +38,16 @@ export const CarList = styled(FlatList as new (props: FlatListProps<CarDTO>) => 
 })``;
 
 
-export const MyCarsButton = styled(RectButton)`
-  width: 60px;
-  height: 60px;
-  background-color: ${({theme}) => theme.colors.main};
+// export const MyCarsButton = styled(RectButton)`
+//   width: 60px;
+//   height: 60px;
+//   background-color: ${({theme}) => theme.colors.main};
 
-  justify-content: center;
-  align-items: center;
+//   justify-content: center;
+//   align-items: center;
 
-  position: absolute;
-  border-radius: 30px;
-  bottom: 24px;
-  right: 24px;
-`;
+//   position: absolute;
+//   border-radius: 30px;
+//   bottom: 24px;
+//   right: 24px;
+// `;

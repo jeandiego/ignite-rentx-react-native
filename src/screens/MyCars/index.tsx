@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, StatusBar, Text } from 'react-native';
+import { FlatList, StatusBar } from 'react-native';
 import { useTheme } from 'styled-components';
 import { CarDTO } from '~/dtos/CarDTO';
 import { api } from '../../api/api';
