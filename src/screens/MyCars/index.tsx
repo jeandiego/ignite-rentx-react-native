@@ -26,6 +26,7 @@ import {
 } from './styles';
 import { IRentalPeriod } from '../schedule/Scheduling';
 import { Loader } from '../../components/Loader';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 interface ICarProps {
   id: string;
@@ -89,7 +90,7 @@ export function MyCars() {
             </Subtitle>
       </Header>
       {loadingSchedules ? 
-      <Loader /> 
+      <LoadAnimation /> 
        : 
       <Content>
         <Appointments>

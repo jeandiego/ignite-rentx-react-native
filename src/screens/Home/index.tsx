@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { BackHandler, StatusBar, StyleSheet } from 'react-native';
 import { PanGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -11,6 +11,7 @@ import Logo from '~/assets/logo.svg';
 import { CardCar } from '~/components/CardCar';
 import { CarDTO } from '~/dtos/CarDTO';
 import useAsync from '~/hooks/useAsync';
+import { LoadAnimation } from '../../components/LoadAnimation';
 import {
   CarList, Container,
   Header, HeaderContent, TotalCars
@@ -78,6 +79,12 @@ export function Home({...props}) {
     fetchCars();
   }, [])
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
+  }, [])
+
   return (
     <Container {...props}>
       <StatusBar 
@@ -88,11 +95,14 @@ export function Home({...props}) {
       <Header>
         <HeaderContent>
         <Logo width={RFValue(108)} height={RFValue(12)} />
+        {!loadingCars ? 
         <TotalCars>
           Total de {cars.length} carros
         </TotalCars>
+         : null}
         </HeaderContent>
       </Header>
+      {loadingCars ? <LoadAnimation /> : 
         <CarList 
           data={cars}
           keyExtractor={item => String(item.id)}
@@ -100,6 +110,7 @@ export function Home({...props}) {
           onRefresh={fetchCars}
           refreshing={loadingCars}
         />
+        }
       <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View
           style={[myCarsButtonStyle, {
